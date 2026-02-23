@@ -1,0 +1,20 @@
+# Arquivos de configuração da IDE (CLion / JetBrains)
+.idea/
+cmake-build-debug/
+cmake-build-release/
+cmake-build-rodar/
+*.xml
+*.iml
+
+# Arquivos de compilação e executáveis
+*.exe
+*.o
+*.obj
+*.out
+*.app
+
+# Arquivos temporários e de sistema
+.DS_Store
+Thumbs.db
+*.log
+*.tmp

@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main() {
 
+    srand(time(NULL));
     int **mat, i, j, tam;
 
     printf("Informe quantas meias tera cada gaveta: ");
@@ -10,7 +12,14 @@ int main() {
     mat = (int**) malloc(tam * sizeof(int*));
 
     for (i = 0; i < tam; i++) {
-        mat[i] = malloc(tam - 1 * sizeof(int));
+        mat[i] = malloc(tam * sizeof(int));
+    }
+    for (i = 0; i < tam; i++) {
+        for (j = 0; j < tam - 1; j++) {
+            mat[i][j] = rand() % 100;
+            printf("Gaveta %d\t Meia:%d\n", i+1, mat[i][j]);
+        }
+
     }
     return 0;
 }

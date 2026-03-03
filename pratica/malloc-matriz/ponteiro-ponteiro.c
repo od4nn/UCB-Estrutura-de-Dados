@@ -15,11 +15,12 @@ int main() {
         mat[i] = malloc(tam * sizeof(int));
     }
     for (i = 0; i < tam; i++) {
-        for (j = 0; j < tam - 1; j++) {
-            mat[i][j] = rand() % 100;
-            printf("Gaveta %d\t Meia:%d\n", i+1, mat[i][j]);
+        for (j = 0; j < tam; j++) {
+            *(*(mat + i) + j) = rand() % 100;
+            printf("Gaveta %d\t Meia:%d\n", i+1, *(*(mat + i) + j));
         }
 
     }
+    free(mat);
     return 0;
 }

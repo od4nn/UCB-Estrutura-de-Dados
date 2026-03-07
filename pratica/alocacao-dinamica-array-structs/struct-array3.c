@@ -1,11 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     int p1;
     int p2;
-}Ponto;
+}Point;
 
 
 int main() {
+    int length = 3;
+    Point *array;
+
+    array = malloc(sizeof(Point) * length);
+
+    Point *Pato;
+    Pato = &array[1];
+
+    Pato->p1 = 23;
+
+    array[0].p1 = 23;
+    array[1]->p2 = 2;
+
     return 0;
 }

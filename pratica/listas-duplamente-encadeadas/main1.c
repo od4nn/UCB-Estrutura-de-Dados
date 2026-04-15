@@ -12,8 +12,8 @@ typedef struct{
     No *inicio_lista;
 }Lista;
 
-No *adicionar_final(Lista *lista, No *novo_no){
-    novo_no = malloc(sizeof(No));
+No *adicionar_final(Lista *lista){
+    No *novo_no = malloc(sizeof(No));
 
     No *aux = lista->inicio_lista;
     while(aux != NULL){
@@ -30,8 +30,8 @@ No *adicionar_final(Lista *lista, No *novo_no){
     return novo_no;
 }
 
-No *adicionar_inicio (Lista *lista, No *novo_no){
-    novo_no = malloc(sizeof(No));
+No *adicionar_inicio (Lista *lista){
+    No *novo_no = malloc(sizeof(No));
     novo_no->anterior = NULL;
 
     if(lista->inicio_lista != NULL){
@@ -64,15 +64,13 @@ int main(){
     lista->tamanho = 0;
     lista->inicio_lista = NULL;
 
-    No *novo_no1, *novo_no2, *novo_no3, *no_final1, *no_final2, *no_final3;
-
-    adicionar_inicio(lista, novo_no1);
-    adicionar_inicio(lista, novo_no2);
-    adicionar_inicio(lista, novo_no3);
-    adicionar_final(lista, no_final1);
-    adicionar_final(lista, no_final2);
-    adicionar_final(lista, no_final3);
-
+    adicionar_inicio(lista);
+    adicionar_inicio(lista);
+    adicionar_inicio(lista);
+    adicionar_final(lista);
+    adicionar_final(lista);
+    adicionar_final(lista);
+    
     No *aux = lista->inicio_lista;
 
     while(aux != NULL){
@@ -81,6 +79,5 @@ int main(){
     }
 
     return 0;
-
     
 }

@@ -17,9 +17,6 @@ int main() {
     lista = inserir(lista, 10);
     lista = inserir(lista, 50);
 
-
-
-
     Lista *aux = lista;
     while (aux != NULL) {
         printf("Valor: %d\n", aux->valor);

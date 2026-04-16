@@ -10,9 +10,10 @@ typedef struct no{
 typedef struct{
     int tamanho;
     No *inicio_lista;
+    No *final_lista;
 }Lista;
 
-No *adicionar_final(Lista *lista, int valor){
+void adicionar_final(Lista *lista, int valor){
     No *novo_no = malloc(sizeof(No));
     novo_no->anterior = NULL;
 
@@ -21,26 +22,21 @@ No *adicionar_final(Lista *lista, int valor){
         novo_no->prox = NULL;
         novo_no->chave = valor;
         lista->inicio_lista = novo_no;
+        lista->final_lista = novo_no;
         lista->tamanho++;
-        return novo_no;
+        return;
     }
 
-    while(aux != NULL){
-        if(aux->prox == NULL){ //significa o fim da lista
-            aux->prox = novo_no;
-            novo_no->prox = NULL;
-            novo_no->anterior = aux;
-            novo_no->chave = valor;
-            lista->tamanho++;
-            break;
-        }
-        aux = aux->prox;
-    }
+    novo_no->prox = NULL;
+    novo_no->anterior = lista->final_lista;
+    lista->final_lista->prox = novo_no;
+    novo_no->chave = valor;
+    lista->final_lista = novo_no;
+    lista->tamanho++;
 
-    return novo_no;
 }
 
-No *adicionar_inicio (Lista *lista, int valor){
+void adicionar_inicio (Lista *lista, int valor){
     No *novo_no = malloc(sizeof(No));
     novo_no->anterior = NULL;
 
@@ -50,18 +46,18 @@ No *adicionar_inicio (Lista *lista, int valor){
         lista->inicio_lista = novo_no;
         novo_no->chave = valor;
         lista->tamanho++;
-        return novo_no;
+        return;
     }
 
     lista->inicio_lista = novo_no;
+    lista->final_lista = novo_no;
     novo_no->prox = NULL;
     novo_no->chave = valor;
     lista->tamanho++;
 
-    return novo_no;
 }
 
-No *adicionar_meio (Lista *lista, int valor){
+void adicionar_meio (Lista *lista, int valor){
     No *novo_no = malloc(sizeof(No));
 
     int elemento_alvo;
@@ -71,8 +67,9 @@ No *adicionar_meio (Lista *lista, int valor){
         novo_no->anterior = NULL;
         novo_no->chave = valor;
         lista->inicio_lista = novo_no;
+        lista->final_lista = novo_no;
         lista->tamanho++;
-        return novo_no;
+        return;
     }
 
     if(lista->tamanho == 1){
@@ -82,7 +79,7 @@ No *adicionar_meio (Lista *lista, int valor){
         novo_no->prox = NULL;
         novo_no->chave = valor;
         lista->tamanho++;
-        return novo_no;
+        return;
     }
 
 
@@ -108,26 +105,67 @@ No *adicionar_meio (Lista *lista, int valor){
                 aux->prox = novo_no;
                 novo_no->chave = valor;
                 lista->tamanho++;
-                return novo_no;
+                break;
             }
             aux = aux->prox;
         }
 }
 
-int main(){
+void liberar_no (Lista *lista, int valor_alvo) {
+    No *aux = lista->inicio_lista;
+    while (aux != NULL) {
+        if (aux->chave == valor_alvo) {
+            if (aux->prox != NULL && aux->anterior != NULL) { //tem um na frente e um atras
+                aux->prox->anterior = aux->anterior;
+                aux->anterior->prox = aux->prox;
+                free(aux);
+                lista->tamanho--;
+                return;
+            }
+            if (aux->prox != NULL) { //so na frente
+                aux->prox->anterior = NULL;
+                lista->inicio_lista = aux->prox;
+                free(aux);
+                lista->tamanho--;
+                return;
+            }
+            if (aux->anterior != NULL) { //so atras
+                aux->anterior->prox = NULL;
+                lista->final_lista = aux->anterior;
+                free(aux);
+                lista->tamanho--;
+                return;
+            }
+            else { //nem na frente nem atras
+                lista->inicio_lista = NULL;
+                lista->final_lista = NULL;
+                free(aux);
+                lista->tamanho--;
+                return;
+            }
+        }
+        aux = aux->prox;
+    }
 
+    printf("\nNo nao encontrado.\n");
+}
+
+int main(){
     Lista *lista = malloc(sizeof(Lista));
     lista->tamanho = 0;
     lista->inicio_lista = NULL;
+    lista->final_lista = NULL;
+    int chave_alvo;
 
     adicionar_inicio(lista, 213);
-    adicionar_inicio(lista, 412);
-    adicionar_inicio(lista, 411);
-    adicionar_meio(lista, 331);
-    //adicionar_final(lista, 241);
-    //adicionar_final(lista, 912);
-    //adicionar_final(lista, 472);
+    adicionar_final(lista, 241);
+    adicionar_final(lista, 912);
+    adicionar_final(lista, 472);
 
+    printf("Informe a chave do no que voce quer liberar: ");
+    scanf("%d", &chave_alvo);
+
+    liberar_no(lista, chave_alvo);
 
     No *aux = lista->inicio_lista;
 
@@ -136,6 +174,8 @@ int main(){
         aux = aux->prox;
     }
     printf("Tamanho da lista: %d", lista->tamanho);
+
+    free(lista);
 
     return 0;
 }
